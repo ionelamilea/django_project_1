@@ -2,12 +2,13 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from . import views
-from .views import BookViewSet, BookCustomViewSet, ActionViewSet
+from .views import BookViewSet, BookCustomViewSet, ActionViewSet, PizzaCustomViewSet
 
 router = DefaultRouter()
 router.register('books', BookViewSet, basename='book')
 router.register('custom_books', BookCustomViewSet, basename="custom_book")
 router.register('common_elements', ActionViewSet, basename="common_elements")
+router.register('custom_pizza', PizzaCustomViewSet, basename="custom_pizza")
 
 urlpatterns = [
     # path("", views.home, name="home"),

@@ -1,12 +1,13 @@
 import json
+from http.client import responses
 
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from .models import Book
-from .serializers import BookSerializer, HWDataSerializer
+from .models import Book,Pizza
+from .serializers import BookSerializer, HWDataSerializer, PizzaSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -126,6 +127,40 @@ def get_books(request: HttpRequest):
         else:
             return HttpResponse("Wrong ID given!", status=400)
 
+
+
+class PizzaCustomViewSet(viewsets.ViewSet):
+    # HTTP GET localhost:8000/custom_pizzas/
+    def list(self,request):
+        pizza = Pizza.objects.all()
+        serializer = PizzaSerializer(pizza, many=True)
+        return Response(serializer.data)
+
+    # HTTP GET localhost:8000/custom_pizzas/1/
+    def retrieve(self,request, pk=None):
+        try:
+            pizza = Pizza.objects.get(pk=pk)
+            serializer = PizzaSerializer(pizza)
+            return Response(serializer.data)
+        except Pizza.DoesNotExist:
+            return Response({"error": "Pizza not found!"}, status=status.HTTP_404_NOT_FOUND)
+
+    # HTTP POST localhost:8000/custom_pizzas/
+    def create(self,request):
+        serializer = PizzaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self,request,pk):
+        try:
+            pizza = Pizza.objects.get(pk=pk)
+            pizza.delete()
+            return Response({"message": "pizza deleted successfully"}, status=status.HTTP_200_OK)
+        except Pizza.DoesNotExist:
+            return Response({"error": "Pizza not found"}, status = status.HTTP_404_NOT_FOUNDH)
 
 
 
