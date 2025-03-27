@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All my books</title>
+</head>
+<body>
+  <h1>My books</h1>
+  {% if books %}
+    <ul>
+      {% for book in books %}
+        <li>
+          {{ book }}
+          <form action="{% url 'confirm_delete' book.id %}" method="get" style="display:inline";>
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You have no books</p>
+  {% endif %}
+</body>
+</html>

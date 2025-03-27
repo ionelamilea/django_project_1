@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
-
-{% block content %}
-  <h2>Content in our custom block</h2>
+<html>
+  <head></head>
+  <body>
+    {% extends 'base.html' %} {% block content %}
+    <h2>Content in our custom block</h2>
   <p>This is a project template</p>
   <ul>
     {% for item in content %}
       <li>{{ item }}</li>
     {% endfor %}
   </ul>
-
   <script>
       async function fetchData() {
           try {
@@ -30,9 +30,8 @@
           }
       }
   </script>
-
   <button onclick="fetchData()">Load Data</button>
   <div id="data-container"></div>
-
-{% endblock %}
-
+    {% endblock %}
+  </body>
+</html>
